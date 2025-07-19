@@ -58,3 +58,56 @@ footer {
 #container {
   border: 1px solid #808080;
 }
+
+aside {
+  background: silver;
+  width: 52px;
+  padding-top: 2px;
+
+  nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1px;
+    justify-content: center;
+  }
+
+  button {
+    width: 24px;
+    height: 24px;
+
+    background: #bdbdbd url('./icons/draw.png') no-repeat center;
+
+    border: 1.5px solid #eee;
+    border-right-color: #000;
+    border-bottom-color: #000;
+
+    image-rendering: pixelated;
+
+    &.active {
+      border-color: #000;
+      border-right-color: #eee;
+      border-bottom-color: #eee;
+    }
+  }
+}
+
+#eraseBtn {
+  background: #bdbdbd url('./icons/erase.png') no-repeat center;
+}
+
+#rectangleBtn {
+  background: #bdbdbd url('./icons/rectangle.png') no-repeat center;
+}
+
+#ellipseBtn {
+  background: #bdbdbd url('./icons/ellipse.png') no-repeat center;
+}
+
+#pickerBtn {
+  background: #bdbdbd url('./icons/picker.png') no-repeat center;
+}
+
+#clearBtn {
+  background: #bdbdbd url('./icons/trash.png') no-repeat center;
+  background-size: 18px;
+}
