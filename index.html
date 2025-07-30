@@ -1,48 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <link rel="stylesheet" href="styles.css" />
-    <script type="module" src="index.js"></script>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Paint.js</title>
-  </head>
-  <body>
-    <h1>
-      <img src="./icon.png" alt="Paint.js" />
-      Paint.js
-    </h1>
+  <link rel="stylesheet" href="styles.css" />
+  <script type="module" src="index.js"></script>
 
-    <div id="container">
-      <header>
-        <button>File</button>
-        <button>Edit</button>
-        <button>View</button>
-        <button>Image</button>
-        <button>Options</button>
-        <button>Help</button>
-      </header>
+  <title>Paint.js</title>
+</head>
 
-      <aside>
-        <nav>
-          <button id="drawBtn" title="Pincel" class="active"></button>
-          <button id="eraseBtn" title="Borrar"></button>
-          <button id="rectangleBtn" title="Rectángulo"></button>
-          <button id="ellipseBtn" title="Elipse"></button>
-          <button id="pickerBtn" title="Capturar Color"></button>
-          <button id="clearBtn" title="Borrar Lienzo"></button>
-        </nav>
-      </aside>
+<body>
+  <h1>
+    <img src="./icon.png" alt="Paint.js" />
+    Paint.js
+  </h1>
 
-      <main>
-        <canvas id="canvas" width="300" height="200"></canvas>
-      </main>
+  <div id="container">
+    <header>
+      <button>File</button>
+      <button>Edit</button>
+      <button>View</button>
+      <button>Image</button>
+      <button>Options</button>
+      <button>Help</button>
+    </header>
 
-      <footer>
-        <input type="color" id="color-picker" value="#000000" />
-      </footer>
-    </div>
-  </body>
+    <aside>
+      <nav>
+        <button id="drawBtn" title="Pincel"></button>
+        <button id="eraseBtn" title="Borrar"></button>
+        <button id="rectangleBtn" title="Rectángulo"></button>
+        <button id="ellipseBtn" title="Elipse"></button>
+        <button id="pickerBtn" title="Capturar Color"></button>
+        <button id="clearBtn" title="Borrar Lienzo"></button>
+      </nav>
+    </aside>
+
+    <main>
+      <canvas id="canvas" width="300" height="200"></canvas>
+    </main>
+
+    <footer>
+      <input type="color" id="color-picker" value="#000000" />
+    </footer>
+  </div>
+</body>
+
 </html>
