@@ -18,6 +18,7 @@ const $clearBtn = $('#clearBtn');
 const $drawBtn = $('#drawBtn');
 const $eraseBtn = $('#eraseBtn');
 const $rectangleBtn = $('#rectangleBtn');
+const $pickerBtn = $('#pickerBtn');
 
 const ctx = $canvas.getContext('2d');
 
@@ -37,6 +38,10 @@ $canvas.addEventListener('mouseleave', stopDrawing);
 
 $colorPicker.addEventListener('change', handleChangeColor);
 $clearBtn.addEventListener('click', clearCanvas);
+
+$pickerBtn.addEventListener('click', () => {
+  setMode(MODES.PICKER);
+});
 
 $eraseBtn.addEventListener('click', () => {
   setMode(MODES.ERASE);
@@ -142,7 +147,17 @@ function setMode(newMode) {
     ctx.lineWidth = 10;
     return;
   }
+
+  if (mode === MODES.PICKER) {
+    $pickerBtn.classList.add('active');
+    return;
+  }
 }
 
 // INIT
 setMode(MODES.DRAW);
+
+// Show Picker if browser has support
+if (typeof window.EyeDropper !== 'undefined') {
+  $pickerBtn.removeAttribute('disabled');
+}
