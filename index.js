@@ -226,3 +226,38 @@ function resizeCanvas() {
 }
 window.addEventListener('resize', resizeCanvas);
 resizeCanvas();
+
+// Funcionalidades del header
+const fileBtn = document.getElementById('fileBtn');
+const fileMenu = document.getElementById('fileMenu');
+
+fileBtn.addEventListener('click', () => {
+  fileMenu.style.display = fileMenu.style.display === 'block' ? 'none' : 'block';
+});
+
+// Cerrar menú al hacer clic fuera
+document.addEventListener('click', (event) => {
+  if (!fileBtn.contains(event.target) && !fileMenu.contains(event.target)) {
+    fileMenu.style.display = 'none';
+  }
+});
+
+// Funciones del menú File
+function newCanvas() {
+  ctx.clearRect(0, 0, $canvas.width, $canvas.height);
+  ctx.fillStyle = '#FFFFFF';
+  ctx.fillRect(0, 0, $canvas.width, $canvas.height);
+}
+
+function saveCanvas() {
+  const link = document.createElement('a');
+  link.download = 'mi_dibujo.png';
+  link.href = $canvas.toDataURL('image/png');
+  link.click();
+}
+
+document.getElementById('newFileBtn').addEventListener('click', newCanvas);
+document.getElementById('saveFileBtn').addEventListener('click', saveCanvas);
+
+// Inicializa con lienzo blanco
+window.addEventListener('load', newCanvas);

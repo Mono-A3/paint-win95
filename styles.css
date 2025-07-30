@@ -253,3 +253,31 @@ aside {
     gap: 8px;
   }
 }
+
+.menu-container {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 120px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  border: 1px solid #ccc;
+}
+
+.dropdown button {
+  width: 100%;
+  padding: 6px;
+  text-align: left;
+  background: #e0e0e0;
+  border: none;
+  cursor: pointer;
+}
+
+.dropdown button:hover {
+  background-color: #c9c9c9;
+}
