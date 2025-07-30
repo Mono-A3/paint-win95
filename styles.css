@@ -47,6 +47,30 @@ canvas {
   max-height: 100%;
 }
 
+#canvas-container {
+  position: relative;
+}
+
+#gridOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-size: 20px 20px;
+  background-image:
+    linear-gradient(to right, #e0e0e0 1px, transparent 1px),
+    linear-gradient(to bottom, #e0e0e0 1px, transparent 1px);
+  pointer-events: none;
+  z-index: 2;
+  display: none;
+}
+
+#canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
 header {
   grid-area: header;
   background: silver;
@@ -257,6 +281,7 @@ aside {
 .menu-container {
   position: relative;
   display: inline-block;
+  z-index: 3;
 }
 
 .dropdown {

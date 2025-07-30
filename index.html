@@ -36,7 +36,16 @@
         </div>
       </div>
 
-      <button>View</button>
+      <div class="menu-container">
+        <button id="viewBtn">View</button>
+        <div id="viewMenu" class="dropdown">
+          <button id="toggleGridBtn">Toggle Grid</button>
+          <button id="zoomInBtn">Zoom In</button>
+          <button id="zoomOutBtn">Zoom Out</button>
+          <button id="fullscreenBtn">Fullscreen</button>
+        </div>
+      </div>
+
       <button>Image</button>
       <button>Options</button>
       <button>Help</button>
@@ -54,7 +63,8 @@
       </nav>
     </aside>
 
-    <main>
+    <main id="canvas-container">
+      <div id="gridOverlay"></div>
       <canvas id="canvas"></canvas>
     </main>
 

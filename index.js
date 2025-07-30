@@ -21,7 +21,7 @@ const $rectangleBtn = $('#rectangleBtn');
 const $pickerBtn = $('#pickerBtn');
 const $ellipseBtn = $('#ellipseBtn');
 
-const ctx = $canvas.getContext('2d');
+const ctx = $canvas.getContext('2d', { willReadFrequently: true });
 
 // STATE
 let isDrawing = false;
@@ -221,14 +221,6 @@ if (typeof window.EyeDropper !== 'undefined') {
   $pickerBtn.removeAttribute('disabled');
 }
 
-function resizeCanvas() {
-  const main = document.querySelector('main');
-  $canvas.width = main.clientWidth;
-  $canvas.height = main.clientHeight;
-}
-window.addEventListener('resize', resizeCanvas);
-resizeCanvas();
-
 // Funcionalidades del header
 
 /* 
@@ -326,3 +318,104 @@ clearBtnEdit.addEventListener('click', clearCanvas);
 // Eventos botones
 document.getElementById('undoBtn').addEventListener('click', undo);
 document.getElementById('redoBtn').addEventListener('click', redo);
+
+/*  
+View
+*/
+const viewBtn = document.getElementById('viewBtn');
+const viewMenu = document.getElementById('viewMenu');
+
+// Mostrar/Ocultar menú
+viewBtn.addEventListener('click', () => {
+  viewMenu.style.display = viewMenu.style.display === 'block' ? 'none' : 'block';
+});
+
+// ---------------------
+// 1. Toggle Grid
+// ---------------------
+let showGrid = false;
+
+// Referencia al overlay del grid
+const gridOverlay = document.getElementById('gridOverlay');
+
+// Alternar visibilidad del grid
+document.getElementById('toggleGridBtn').addEventListener('click', () => {
+  showGrid = !showGrid;
+  gridOverlay.style.display = showGrid ? 'block' : 'none';
+});
+
+// ---------------------
+// 2. Zoom
+// ---------------------
+let zoomLevel = 1;
+
+function applyZoom() {
+  const main = document.querySelector('main');
+
+  $canvas.style.transform = `scale(${zoomLevel})`;
+  gridOverlay.style.transform = `scale(${zoomLevel})`;
+
+  $canvas.style.transformOrigin = '0 0';
+  gridOverlay.style.transformOrigin = '0 0';
+
+  main.style.overflow = 'auto';
+}
+
+document.getElementById('zoomInBtn').addEventListener('click', () => {
+  zoomLevel += 0.1;
+  applyZoom();
+});
+
+document.getElementById('zoomOutBtn').addEventListener('click', () => {
+  zoomLevel = Math.max(0.2, zoomLevel - 0.1);
+  applyZoom();
+});
+
+// ---------------------
+// 3. Fullscreen
+// ---------------------
+document.getElementById('fullscreenBtn').addEventListener('click', () => {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen();
+  } else {
+    document.exitFullscreen();
+  }
+});
+
+// Cerrar menú al hacer clic fuera
+document.addEventListener('click', (event) => {
+  if (!viewBtn.contains(event.target) && !viewMenu.contains(event.target)) {
+    viewMenu.style.display = 'none';
+  }
+});
+
+function resizeCanvas() {
+  const main = document.querySelector('main');
+  const width = main.clientWidth;
+  const height = main.clientHeight;
+
+  // Ajustar el tamaño del canvas
+  $canvas.width = width;
+  $canvas.height = height;
+
+  // Ajustar el tamaño del overlay igual al canvas
+  const gridOverlay = document.getElementById('gridOverlay');
+  gridOverlay.style.width = width + 'px';
+  gridOverlay.style.height = height + 'px';
+
+  // Mantener fondo blanco en el canvas
+  ctx.fillStyle = '#FFFFFF';
+  ctx.fillRect(0, 0, width, height);
+}
+
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+
+document.addEventListener('click', (event) => {
+  const editBtn = document.getElementById('editBtn');
+  const editMenu = document.getElementById('editMenu');
+
+  if (!editBtn.contains(event.target) && !editMenu.contains(event.target)) {
+    editMenu.style.display = 'none';
+  }
+});
