@@ -194,3 +194,14 @@ setMode(MODES.DRAW);
 if (typeof window.EyeDropper !== 'undefined') {
   $pickerBtn.removeAttribute('disabled');
 }
+
+function resizeCanvas() {
+  const main = document.querySelector('main');
+  // Ajusta el tamaño interno del canvas al tamaño visible
+  $canvas.width = main.clientWidth;
+  $canvas.height = main.clientHeight;
+}
+
+// Llama a resizeCanvas al cargar y al cambiar el tamaño de la ventana
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
