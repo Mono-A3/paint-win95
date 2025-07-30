@@ -117,7 +117,8 @@ function clearCanvas() {
   ctx.clearRect(0, 0, $canvas.width, $canvas.height);
 }
 
-function setMode(newMode) {
+async function setMode(newMode) {
+  let previewsMode = mode;
   mode = newMode;
 
   // para limipiar el boton acitvo actual
@@ -150,6 +151,19 @@ function setMode(newMode) {
 
   if (mode === MODES.PICKER) {
     $pickerBtn.classList.add('active');
+
+    const eyeDropper = new window.EyeDropper();
+
+    try {
+      const result = await eyeDropper.open();
+      const { sRGBHex } = result;
+      ctx.strokeStyle = sRGBHex;
+      $colorPicker.value = sRGBHex;
+      setMode(previewsMode);
+    } catch (err) {
+      // si ha habido un error o el usuario ha recuperado ningún color
+    }
+
     return;
   }
 }
