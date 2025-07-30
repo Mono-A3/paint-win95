@@ -19,6 +19,7 @@ const $drawBtn = $('#drawBtn');
 const $eraseBtn = $('#eraseBtn');
 const $rectangleBtn = $('#rectangleBtn');
 const $pickerBtn = $('#pickerBtn');
+const $ellipseBtn = $('#ellipseBtn');
 
 const ctx = $canvas.getContext('2d');
 
@@ -42,6 +43,10 @@ $clearBtn.addEventListener('click', clearCanvas);
 
 document.addEventListener('keydown', handleKeyDown);
 document.addEventListener('keyup', handleKeyUP);
+
+$ellipseBtn.addEventListener('click', () => {
+  setMode(MODES.ELLIPSE);
+});
 
 $pickerBtn.addEventListener('click', () => {
   setMode(MODES.PICKER);
@@ -113,6 +118,26 @@ function draw(event) {
 
     return;
   }
+
+  if (mode === MODES.ELLIPSE) {
+    ctx.putImageData(imageData, 0, 0);
+
+    let width = offsetX - startX;
+    let height = offsetY - startY;
+
+    // Si shift está presionado, elipse será un circulo
+    if (isShiftPressed) {
+      const radius = Math.max(Math.abs(width), Math.abs(height));
+      width = width > 0 ? radius : -radius;
+      height = height > 0 ? radius : -radius;
+    }
+
+    ctx.beginPath();
+    ctx.ellipse(startX + width / 2, startY + height / 2, Math.abs(width / 2), Math.abs(height / 2), 0, 0, 2 * Math.PI);
+    ctx.stroke();
+
+    return;
+  }
 }
 
 function stopDrawing(event) {
@@ -132,50 +157,49 @@ async function setMode(newMode) {
   let previewsMode = mode;
   mode = newMode;
 
-  // para limipiar el boton acitvo actual
+  // Limpiar el botón activo actual
   const activeBtn = $('button.active');
   if (activeBtn) activeBtn.classList.remove('active');
 
-  if (mode === MODES.DRAW) {
-    $drawBtn.classList.add('active');
-    $canvas.style.cursor = 'crosshair';
-    ctx.globalCompositeOperation = 'source-over';
-    ctx.lineWidth = 2;
-    return;
-  }
-
-  if (mode === MODES.RECTANGLE) {
-    $rectangleBtn.classList.add('active');
-    $canvas.style.cursor = 'nw-resize';
-    ctx.globalCompositeOperation = 'source-over';
-    ctx.lineWidth = 2;
-    return;
-  }
-
-  if (mode === MODES.ERASE) {
-    $eraseBtn.classList.add('active');
-    $canvas.style.cursor = 'cell';
-    ctx.globalCompositeOperation = 'destination-out';
-    ctx.lineWidth = 10;
-    return;
-  }
-
-  if (mode === MODES.PICKER) {
-    $pickerBtn.classList.add('active');
-
-    const eyeDropper = new window.EyeDropper();
-
-    try {
-      const result = await eyeDropper.open();
-      const { sRGBHex } = result;
-      ctx.strokeStyle = sRGBHex;
-      $colorPicker.value = sRGBHex;
-      setMode(previewsMode);
-    } catch (err) {
-      // si ha habido un error o el usuario ha recuperado ningún color
-    }
-
-    return;
+  // Cambiar el botón activo y el cursor según el modo
+  switch (mode) {
+    case MODES.DRAW:
+      $drawBtn.classList.add('active');
+      $canvas.style.cursor = 'crosshair';
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.lineWidth = 2;
+      break;
+    case MODES.RECTANGLE:
+      $rectangleBtn.classList.add('active');
+      $canvas.style.cursor = 'nw-resize';
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.lineWidth = 2;
+      break;
+    case MODES.ELLIPSE:
+      $ellipseBtn.classList.add('active');
+      $canvas.style.cursor = 'crosshair';
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.lineWidth = 2;
+      break;
+    case MODES.ERASE:
+      $eraseBtn.classList.add('active');
+      $canvas.style.cursor = 'cell';
+      ctx.globalCompositeOperation = 'destination-out';
+      ctx.lineWidth = 10;
+      break;
+    case MODES.PICKER:
+      $pickerBtn.classList.add('active');
+      if (typeof window.EyeDropper !== 'undefined') {
+        const eyeDropper = new window.EyeDropper();
+        try {
+          const result = await eyeDropper.open();
+          const { sRGBHex } = result;
+          ctx.strokeStyle = sRGBHex;
+          $colorPicker.value = sRGBHex;
+          setMode(previewsMode);
+        } catch (err) {}
+      }
+      break;
   }
 }
 
@@ -197,11 +221,8 @@ if (typeof window.EyeDropper !== 'undefined') {
 
 function resizeCanvas() {
   const main = document.querySelector('main');
-  // Ajusta el tamaño interno del canvas al tamaño visible
   $canvas.width = main.clientWidth;
   $canvas.height = main.clientHeight;
 }
-
-// Llama a resizeCanvas al cargar y al cambiar el tamaño de la ventana
 window.addEventListener('resize', resizeCanvas);
 resizeCanvas();

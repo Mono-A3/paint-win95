@@ -4,6 +4,13 @@
   box-sizing: border-box;
 }
 
+html,
+body,
+#container {
+  height: 100%;
+  min-height: 100vh;
+}
+
 body {
   font-family: 'Arial', sans-serif;
   background: #222;
@@ -31,13 +38,13 @@ h1 {
 }
 
 canvas {
-  width: 100%;
-  height: 100%;
   display: block;
   border: 2.5px solid #222;
   border-radius: 2px;
   box-shadow: 2px 2px #808080;
   background: #fff;
+  max-width: 100%;
+  max-height: 100%;
 }
 
 header {
