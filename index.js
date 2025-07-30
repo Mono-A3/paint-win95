@@ -151,6 +151,8 @@ function handleChangeColor() {
 
 function clearCanvas() {
   ctx.clearRect(0, 0, $canvas.width, $canvas.height);
+  ctx.fillStyle = '#FFFFFF';
+  ctx.fillRect(0, 0, $canvas.width, $canvas.height);
 }
 
 async function setMode(newMode) {
@@ -228,6 +230,10 @@ window.addEventListener('resize', resizeCanvas);
 resizeCanvas();
 
 // Funcionalidades del header
+
+/* 
+File
+*/
 const fileBtn = document.getElementById('fileBtn');
 const fileMenu = document.getElementById('fileMenu');
 
@@ -261,3 +267,62 @@ document.getElementById('saveFileBtn').addEventListener('click', saveCanvas);
 
 // Inicializa con lienzo blanco
 window.addEventListener('load', newCanvas);
+
+/*  
+Edit
+*/
+const editBtn = document.getElementById('editBtn');
+const editMenu = document.getElementById('editMenu');
+const clearBtnEdit = document.getElementById('clearBtn-Edit');
+
+// Mostrar/Ocultar menú
+editBtn.addEventListener('click', () => {
+  editMenu.style.display = editMenu.style.display === 'block' ? 'none' : 'block';
+});
+
+// Historial de acciones
+let undoStack = [];
+let redoStack = [];
+
+function saveState() {
+  undoStack.push($canvas.toDataURL());
+  redoStack = []; // Limpiar redo al dibujar algo nuevo
+}
+
+// Llamar a saveState cuando el usuario dibuje
+$canvas.addEventListener('mousedown', () => saveState());
+
+// Función Undo
+function undo() {
+  if (undoStack.length > 0) {
+    redoStack.push($canvas.toDataURL());
+    let lastState = undoStack.pop();
+    restoreCanvas(lastState);
+  }
+}
+
+// Función Redo
+function redo() {
+  if (redoStack.length > 0) {
+    undoStack.push($canvas.toDataURL());
+    let nextState = redoStack.pop();
+    restoreCanvas(nextState);
+  }
+}
+
+// Función para restaurar imagen en el canvas
+function restoreCanvas(state) {
+  let img = new Image();
+  img.src = state;
+  img.onload = () => {
+    ctx.clearRect(0, 0, $canvas.width, $canvas.height);
+    ctx.drawImage(img, 0, 0);
+  };
+}
+
+// Función Clear All
+clearBtnEdit.addEventListener('click', clearCanvas);
+
+// Eventos botones
+document.getElementById('undoBtn').addEventListener('click', undo);
+document.getElementById('redoBtn').addEventListener('click', redo);
