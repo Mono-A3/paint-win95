@@ -233,13 +233,6 @@ fileBtn.addEventListener('click', () => {
   fileMenu.style.display = fileMenu.style.display === 'block' ? 'none' : 'block';
 });
 
-// Cerrar menú al hacer clic fuera
-document.addEventListener('click', (event) => {
-  if (!fileBtn.contains(event.target) && !fileMenu.contains(event.target)) {
-    fileMenu.style.display = 'none';
-  }
-});
-
 // Funciones del menú File
 function newCanvas() {
   ctx.clearRect(0, 0, $canvas.width, $canvas.height);
@@ -411,11 +404,80 @@ function resizeCanvas() {
 window.addEventListener('resize', resizeCanvas);
 resizeCanvas();
 
-document.addEventListener('click', (event) => {
-  const editBtn = document.getElementById('editBtn');
-  const editMenu = document.getElementById('editMenu');
+/* 
+  Image
+*/
+const imageBtn = document.getElementById('imageBtn');
+const imageMenu = document.getElementById('imageMenu');
+// Mostrar/Ocultar menú
+imageBtn.addEventListener('click', () => {
+  imageMenu.style.display = imageMenu.style.display === 'block' ? 'none' : 'block';
+});
 
-  if (!editBtn.contains(event.target) && !editMenu.contains(event.target)) {
-    editMenu.style.display = 'none';
+// Funciones de edición
+function invertColors() {
+  const imageData = ctx.getImageData(0, 0, $canvas.width, $canvas.height);
+  const data = imageData.data;
+
+  for (let i = 0; i < data.length; i += 4) {
+    data[i] = 255 - data[i]; // R
+    data[i + 1] = 255 - data[i + 1]; // G
+    data[i + 2] = 255 - data[i + 2]; // B
   }
+
+  ctx.putImageData(imageData, 0, 0);
+}
+function grayscale() {
+  const imageData = ctx.getImageData(0, 0, $canvas.width, $canvas.height);
+  const data = imageData.data;
+
+  for (let i = 0; i < data.length; i += 4) {
+    const avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
+    data[i] = data[i + 1] = data[i + 2] = avg;
+  }
+
+  ctx.putImageData(imageData, 0, 0);
+}
+function flipHorizontal() {
+  const imageData = ctx.getImageData(0, 0, $canvas.width, $canvas.height);
+  const tempCanvas = document.createElement('canvas');
+  const tempCtx = tempCanvas.getContext('2d');
+
+  tempCanvas.width = $canvas.width;
+  tempCanvas.height = $canvas.height;
+
+  tempCtx.putImageData(imageData, 0, 0);
+  ctx.save();
+  ctx.scale(-1, 1);
+  ctx.drawImage(tempCanvas, -$canvas.width, 0);
+  ctx.restore();
+}
+function flipVertical() {
+  const imageData = ctx.getImageData(0, 0, $canvas.width, $canvas.height);
+  const tempCanvas = document.createElement('canvas');
+  const tempCtx = tempCanvas.getContext('2d');
+
+  tempCanvas.width = $canvas.width;
+  tempCanvas.height = $canvas.height;
+
+  tempCtx.putImageData(imageData, 0, 0);
+  ctx.save();
+  ctx.scale(1, -1);
+  ctx.drawImage(tempCanvas, 0, -$canvas.height);
+  ctx.restore();
+}
+
+// Eventos de botones
+document.getElementById('invertBtn').addEventListener('click', invertColors);
+document.getElementById('grayscaleBtn').addEventListener('click', grayscale);
+document.getElementById('flipHBtn').addEventListener('click', flipHorizontal);
+document.getElementById('flipVBtn').addEventListener('click', flipVertical);
+
+/* 
+OCULTAR MENUS SI DA CLICK FUERA
+*/
+window.addEventListener('click', (event) => {
+  if (!fileBtn.contains(event.target) && !fileMenu.contains(event.target)) fileMenu.style.display = 'none';
+  if (!editBtn.contains(event.target) && !editMenu.contains(event.target)) editMenu.style.display = 'none';
+  if (!imageBtn.contains(event.target) && !imageMenu.contains(event.target)) imageMenu.style.display = 'none';
 });
