@@ -306,3 +306,14 @@ aside {
 .dropdown button:hover {
   background-color: #c9c9c9;
 }
+
+#optionsMenu label {
+  display: block;
+  padding: 6px;
+  font-size: 12px;
+}
+
+#optionsMenu input[type="range"],
+#optionsMenu select {
+  width: 100%;
+}

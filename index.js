@@ -7,6 +7,9 @@ const MODES = {
   PICKER: 'picker',
 };
 
+let brushSize = 2;
+let brushShape = 'round';
+
 // UTILITIES
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => document.querySelectorAll(selector);
@@ -114,6 +117,7 @@ function draw(event) {
 
     ctx.beginPath();
     ctx.rect(startX, startY, width, height);
+    if (fillShapeCheckbox.checked) ctx.fill();
     ctx.stroke();
 
     return;
@@ -134,6 +138,7 @@ function draw(event) {
 
     ctx.beginPath();
     ctx.ellipse(startX + width / 2, startY + height / 2, Math.abs(width / 2), Math.abs(height / 2), 0, 0, 2 * Math.PI);
+    if (fillShapeCheckbox.checked) ctx.fill();
     ctx.stroke();
 
     return;
@@ -147,6 +152,7 @@ function stopDrawing(event) {
 function handleChangeColor() {
   const { value } = $colorPicker;
   ctx.strokeStyle = value;
+  ctx.fillStyle = value;
 }
 
 function clearCanvas() {
@@ -169,26 +175,42 @@ async function setMode(newMode) {
       $drawBtn.classList.add('active');
       $canvas.style.cursor = 'crosshair';
       ctx.globalCompositeOperation = 'source-over';
-      ctx.lineWidth = 2;
+      ctx.lineCap = brushShape;
+      ctx.lineJoin = brushShape;
+      ctx.lineWidth = brushSize;
       break;
+
     case MODES.RECTANGLE:
       $rectangleBtn.classList.add('active');
       $canvas.style.cursor = 'nw-resize';
       ctx.globalCompositeOperation = 'source-over';
-      ctx.lineWidth = 2;
+      ctx.lineCap = brushShape;
+      ctx.lineJoin = brushShape;
+      ctx.lineWidth = brushSize;
+      ctx.strokeStyle = $colorPicker.value;
+      ctx.fillStyle = $colorPicker.value;
       break;
+
     case MODES.ELLIPSE:
       $ellipseBtn.classList.add('active');
       $canvas.style.cursor = 'crosshair';
       ctx.globalCompositeOperation = 'source-over';
-      ctx.lineWidth = 2;
+      ctx.lineCap = brushShape;
+      ctx.lineJoin = brushShape;
+      ctx.lineWidth = brushSize;
+      ctx.strokeStyle = $colorPicker.value;
+      ctx.fillStyle = $colorPicker.value;
       break;
+
     case MODES.ERASE:
       $eraseBtn.classList.add('active');
       $canvas.style.cursor = 'cell';
       ctx.globalCompositeOperation = 'destination-out';
-      ctx.lineWidth = 10;
+      ctx.lineCap = brushShape;
+      ctx.lineJoin = brushShape;
+      ctx.lineWidth = brushSize;
       break;
+
     case MODES.PICKER:
       $pickerBtn.classList.add('active');
       if (typeof window.EyeDropper !== 'undefined') {
@@ -238,6 +260,11 @@ function newCanvas() {
   ctx.clearRect(0, 0, $canvas.width, $canvas.height);
   ctx.fillStyle = '#FFFFFF';
   ctx.fillRect(0, 0, $canvas.width, $canvas.height);
+
+  brushShape = 'round';
+  brushShapeSelect.value = 'round';
+  ctx.lineCap = brushShape;
+  ctx.lineJoin = brushShape;
 }
 
 function saveCanvas() {
@@ -251,7 +278,13 @@ document.getElementById('newFileBtn').addEventListener('click', newCanvas);
 document.getElementById('saveFileBtn').addEventListener('click', saveCanvas);
 
 // Inicializa con lienzo blanco
-window.addEventListener('load', newCanvas);
+window.addEventListener('load', () => {
+  newCanvas();
+  brushShape = 'round';
+  brushShapeSelect.value = 'round';
+  ctx.lineCap = brushShape;
+  ctx.lineJoin = brushShape;
+});
 
 /*  
 Edit
@@ -413,7 +446,6 @@ const imageMenu = document.getElementById('imageMenu');
 imageBtn.addEventListener('click', () => {
   imageMenu.style.display = imageMenu.style.display === 'block' ? 'none' : 'block';
 });
-
 // Funciones de edición
 function invertColors() {
   const imageData = ctx.getImageData(0, 0, $canvas.width, $canvas.height);
@@ -466,12 +498,48 @@ function flipVertical() {
   ctx.drawImage(tempCanvas, 0, -$canvas.height);
   ctx.restore();
 }
-
 // Eventos de botones
 document.getElementById('invertBtn').addEventListener('click', invertColors);
 document.getElementById('grayscaleBtn').addEventListener('click', grayscale);
 document.getElementById('flipHBtn').addEventListener('click', flipHorizontal);
 document.getElementById('flipVBtn').addEventListener('click', flipVertical);
+
+/* 
+  OPTIONS
+*/
+const optionsBtn = document.getElementById('optionsBtn');
+const optionsMenu = document.getElementById('optionsMenu');
+// Mostrar/Ocultar menú
+optionsBtn.addEventListener('click', () => {
+  optionsMenu.style.display = optionsMenu.style.display === 'block' ? 'none' : 'block';
+});
+// Opciones
+const brushSizeInput = document.getElementById('brushSize');
+const brushShapeSelect = document.getElementById('brushShape');
+const fillShapeCheckbox = document.getElementById('fillShape');
+const showCursorCheckbox = document.getElementById('showCursor');
+// Actualizar grosor del pincel
+brushSizeInput.addEventListener('input', () => {
+  brushSize = brushSizeInput.value;
+  ctx.lineWidth = brushSize;
+});
+// Cambiar forma del pincel
+brushShapeSelect.addEventListener('change', () => {
+  brushShape = brushShapeSelect.value;
+  ctx.lineCap = brushShape;
+  ctx.lineJoin = brushShape;
+});
+// Activar relleno en figuras
+function drawRectangleWithOptions(x, y, w, h) {
+  if (fillShapeCheckbox.checked) {
+    ctx.fillRect(x, y, w, h);
+  }
+  ctx.strokeRect(x, y, w, h);
+}
+// Activar o desactivar cursor tipo crosshair
+showCursorCheckbox.addEventListener('change', () => {
+  $canvas.style.cursor = showCursorCheckbox.checked ? 'crosshair' : 'default';
+});
 
 /* 
 OCULTAR MENUS SI DA CLICK FUERA
@@ -480,4 +548,15 @@ window.addEventListener('click', (event) => {
   if (!fileBtn.contains(event.target) && !fileMenu.contains(event.target)) fileMenu.style.display = 'none';
   if (!editBtn.contains(event.target) && !editMenu.contains(event.target)) editMenu.style.display = 'none';
   if (!imageBtn.contains(event.target) && !imageMenu.contains(event.target)) imageMenu.style.display = 'none';
+  if (!optionsBtn.contains(event.target) && !optionsMenu.contains(event.target)) optionsMenu.style.display = 'none';
+});
+
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape') {
+    fileMenu.style.display = 'none';
+    editMenu.style.display = 'none';
+    viewMenu.style.display = 'none';
+    imageMenu.style.display = 'none';
+    optionsMenu.style.display = 'none';
+  }
 });

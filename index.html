@@ -57,7 +57,30 @@
         </div>
       </div>
 
-      <button>Options</button>
+      <div class="menu-container">
+        <button id="optionsBtn">Options</button>
+        <div id="optionsMenu" class="dropdown">
+          <label>
+            Brush Size
+            <input type="range" id="brushSize" min="1" max="50" value="2">
+          </label>
+          <label>
+            Brush Shape
+            <select id="brushShape">
+              <option value="round">Round</option>
+              <option value="square">Square</option>
+              <option value="butt">Butt</option>
+            </select>
+          </label>
+          <label>
+            <input type="checkbox" id="fillShape"> Fill Shapes
+          </label>
+          <label>
+            <input type="checkbox" id="showCursor" checked> Show Crosshair
+          </label>
+        </div>
+      </div>
+
       <button>Help</button>
     </header>
 
