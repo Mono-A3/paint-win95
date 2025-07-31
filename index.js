@@ -542,6 +542,49 @@ showCursorCheckbox.addEventListener('change', () => {
 });
 
 /* 
+  HELP
+*/
+const helpBtn = document.getElementById('helpBtn');
+const helpMenu = document.getElementById('helpMenu');
+const helpModal = document.getElementById('helpModal');
+const helpTitle = document.getElementById('helpTitle');
+const helpText = document.getElementById('helpText');
+const closeHelpModal = document.getElementById('closeHelpModal');
+// Mostrar/Ocultar menú
+helpBtn.addEventListener('click', () => {
+  helpMenu.style.display = helpMenu.style.display === 'block' ? 'none' : 'block';
+});
+// Atajos de teclado
+document.getElementById('shortcutsHelpBtn').addEventListener('click', () => {
+  helpTitle.textContent = 'Atajos de teclado';
+  helpText.innerHTML = `
+    <b>Shift</b>: Mantener proporción al dibujar rectángulos y elipses.<br>
+    <b>Ctrl + Z</b>: Deshacer (Undo).<br>
+    <b>Ctrl + Y</b>: Rehacer (Redo).<br>
+    <b>Esc</b>: Cerrar menús.<br>
+    <b>Rueda del mouse</b>: Zoom (si está habilitado).<br>
+  `;
+  helpModal.style.display = 'block';
+});
+// Acerca de
+document.getElementById('aboutBtn').addEventListener('click', () => {
+  helpTitle.textContent = 'Acerca de Paint.js';
+  helpText.textContent =
+    'Paint.js es una aplicación web desarrollada para simular un editor de dibujo sencillo, con funciones de pincel, borrador, figuras geométricas, zoom, grid y edición de imagen.';
+  helpModal.style.display = 'block';
+});
+// Cerrar modal
+closeHelpModal.addEventListener('click', () => {
+  helpModal.style.display = 'none';
+});
+// Cerrar al hacer clic fuera del modal
+window.addEventListener('click', (event) => {
+  if (event.target === helpModal) {
+    helpModal.style.display = 'none';
+  }
+});
+
+/* 
 OCULTAR MENUS SI DA CLICK FUERA
 */
 window.addEventListener('click', (event) => {
@@ -549,6 +592,7 @@ window.addEventListener('click', (event) => {
   if (!editBtn.contains(event.target) && !editMenu.contains(event.target)) editMenu.style.display = 'none';
   if (!imageBtn.contains(event.target) && !imageMenu.contains(event.target)) imageMenu.style.display = 'none';
   if (!optionsBtn.contains(event.target) && !optionsMenu.contains(event.target)) optionsMenu.style.display = 'none';
+  if (!helpBtn.contains(event.target) && !helpMenu.contains(event.target)) helpMenu.style.display = 'none';
 });
 
 document.addEventListener('keydown', (event) => {

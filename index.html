@@ -81,7 +81,28 @@
         </div>
       </div>
 
-      <button>Help</button>
+      <div class="menu-container">
+        <button id="helpBtn">Help</button>
+        <div id="helpMenu" class="dropdown">
+          <button id="shortcutsHelpBtn">Atajos de teclado</button>
+          <button id="aboutBtn">Acerca de Paint.js</button>
+        </div>
+      </div>
+
+      <!-- Modal para mostrar información -->
+      <div id="helpModal" class="modal">
+        <div class="modal-content">
+          <div class="modal-header">
+            <span id="helpTitle">Ayuda</span>
+            <span id="closeHelpModal" class="close">X</span>
+          </div>
+          <div class="modal-body">
+            <p id="helpText"></p>
+          </div>
+        </div>
+      </div>
+
+
     </header>
 
 

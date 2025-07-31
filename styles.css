@@ -317,3 +317,78 @@ aside {
 #optionsMenu select {
   width: 100%;
 }
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 999;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(50, 50, 50, 0.35);
+  /* Gris oscuro translúcido */
+}
+
+.modal-content {
+  background: #d4d4d4;
+  /* Gris base */
+  border: 2px solid #808080;
+  border-top-color: #f5f5f5;
+  /* borde superior más claro */
+  border-left-color: #f5f5f5;
+  box-shadow: 4px 4px 0 #3a3a3a;
+  margin: 8% auto;
+  width: 62%;
+  padding: 0;
+  font-family: 'Tahoma', sans-serif;
+  font-size: 13px;
+  color: #111;
+}
+
+.modal-header {
+  background: linear-gradient(to bottom, #d0e4ff, #a9c9f7);
+  /* degradado gris */
+  color: #000;
+  padding: 4px 6px;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #808080;
+  height: 22px;
+  text-shadow: 1px 1px #e0e0e0;
+}
+
+.modal-header .close {
+  background: #c0c0c0;
+  border: 2px outset #fff;
+  color: #000;
+  font-size: 12px;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  line-height: 15px;
+  cursor: pointer;
+  margin-left: 6px;
+  box-shadow: inset 1px 1px #fff, inset -1px -1px #808080;
+}
+
+.modal-header .close:hover {
+  background: #e57373;
+}
+
+.modal-body {
+  padding: 12px;
+  background: #e5e5e5;
+  border-top: 2px solid #fff;
+  border-left: 2px solid #fff;
+  border-right: 2px solid #808080;
+  border-bottom: 2px solid #808080;
+}
+
+.modal-body p {
+  margin: 5px 0;
+  line-height: 1.4em;
+  color: #222;
+}
