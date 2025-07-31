@@ -261,10 +261,19 @@ function newCanvas() {
   ctx.fillStyle = '#FFFFFF';
   ctx.fillRect(0, 0, $canvas.width, $canvas.height);
 
+  // ✅ Restablecer pincel a valores por defecto
+  brushSize = 2;
   brushShape = 'round';
-  brushShapeSelect.value = 'round';
   ctx.lineCap = brushShape;
   ctx.lineJoin = brushShape;
+  ctx.lineWidth = brushSize;
+
+  // ✅ Restablecer inputs de opciones
+  document.getElementById('brushSize').value = brushSize;
+  document.getElementById('brushShape').value = brushShape;
+
+  // ✅ También asegura el modo DRAW activado
+  setMode(MODES.DRAW);
 }
 
 function saveCanvas() {
