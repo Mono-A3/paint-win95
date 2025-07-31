@@ -122,10 +122,26 @@
       <canvas id="canvas"></canvas>
     </main>
 
-    <footer>
+    <footer id="footer-color">
       <input type="color" id="color-picker" value="#000000" />
     </footer>
   </div>
+
+  <footer id="app-footer">
+    <div class="footer-container">
+      <span class="footer-text">
+        © <span id="currentYear"></span>
+        <a href="https://andresaraque.com/" target="_blank" class="footer-link">
+          Andres Araque
+        </a>. Todos los derechos reservados.
+      </span>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById("currentYear").textContent = new Date().getFullYear();
+  </script>
+
 </body>
 
 </html>

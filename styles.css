@@ -5,20 +5,20 @@
 }
 
 html,
-body,
-#container {
+body {
   height: 100%;
-  min-height: 100vh;
+  margin: 0;
+  padding: 0;
 }
 
 body {
   font-family: 'Arial', sans-serif;
   background: #007f82;
   padding: 24px;
-  margin: 0;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
+  min-height: 100vh;
+  padding-bottom: 50px;
 }
 
 h1 {
@@ -105,7 +105,7 @@ main {
   min-height: 0;
 }
 
-footer {
+#footer-color {
   grid-area: footer;
   background: #e0e0e0;
   padding: 8px;
@@ -391,4 +391,53 @@ aside {
   margin: 5px 0;
   line-height: 1.4em;
   color: #222;
+}
+
+#app-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 40px;
+  background: #c0c0c0;
+  border-top: 2px solid #808080;
+  border-left: 2px solid #fff;
+  padding: 0 16px;
+  font-family: 'Tahoma', sans-serif;
+  font-size: 13px;
+  color: #222;
+  line-height: 40px;
+  box-shadow: inset 1px 1px #fff, inset -1px -1px #808080;
+  z-index: 1000;
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  text-align: center;
+}
+
+.footer-text {
+  color: #111;
+}
+
+.footer-link {
+  color: #000080;
+  text-decoration: none;
+}
+
+.footer-link:hover {
+  text-decoration: underline;
+}
+
+.footer-links {
+  list-style: none;
+  display: flex;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
 }
