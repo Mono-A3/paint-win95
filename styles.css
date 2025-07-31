@@ -13,7 +13,7 @@ body,
 
 body {
   font-family: 'Arial', sans-serif;
-  background: #222;
+  background: #007f82;
   padding: 24px;
   margin: 0;
   min-height: 100vh;
@@ -214,7 +214,7 @@ aside {
 
 #color-picker {
   border: 2px inset #808080;
-  width: 48px;
+  width: 8%;
   height: 38px;
   background: #fff;
   cursor: pointer;
